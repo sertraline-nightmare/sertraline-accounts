@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sertraline Accounts — Discord CSAM Distributor Tracker</title>
+  <meta name="description" content="Auto-updated list of Discord accounts operated by Sertraline and accomplices. Ban them from your server.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-lang="ar">
+
+  <!-- Language Switcher -->
+  <div class="lang-switch">
+    <button class="lang-btn" id="btn-en" onclick="setLang('en')" style="order:0">EN</button>
+    <button class="lang-btn active" id="btn-ar" onclick="setLang('ar')" style="order:1">عربي</button>
+  </div>
+
+  <div class="container">
+
+    <!-- Hero -->
+    <section class="hero">
+      <h1 class="hero-title">sertraline-accounts</h1>
+      <p class="hero-subtitle i18n" data-en="Auto-updated list of Discord accounts operated by Sertraline and his accomplices. Pre-ban them before they cause damage." data-ar="قائمة محدّثة تلقائيًا بحسابات سيرترالين وأعوانه على Discord. احظرهم مسبقًا قبل لا يخربون سيرفرك."></p>
+      <div class="hero-badges" style="direction:ltr">
+        <span class="badge" style="order:0"><span class="badge-dot green"></span> <span id="badge-updated" title="">—</span></span>
+        <span class="badge" style="order:1"><span class="badge-dot red"></span> <span id="badge-count-text">—</span></span>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- Webhook Registration -->
+    <section id="webhook">
+      <h2 class="section-title"><span class="bar"></span><span class="i18n" data-en="Webhook Notifications" data-ar="إشعارات Webhook"></span></h2>
+      <p class="section-desc i18n" data-en="Get notified on Discord when new accounts are detected. Register your webhook below." data-ar="توصلك إشعارات على Discord لما ينكشف حساب جديد. سجّل الـ Webhook حقك هنا."></p>
+      <div class="card">
+        <form id="webhook-form" onsubmit="submitWebhook(event)">
+          <div class="form-group">
+            <label class="form-label i18n" data-en="Discord Webhook URL" data-ar="رابط الـ Discord Webhook"></label>
+            <input type="url" class="form-input" id="webhook-url" placeholder="https://discord.com/api/webhooks/..." required>
+            <span class="form-hint i18n" data-en="Create a webhook in your channel: Channel Settings → Integrations → Webhooks" data-ar="أنشئ Webhook في سيرفرك: إعدادات الروم ← Integrations ← Webhooks"></span>
+          </div>
+          <div class="form-group">
+            <label class="form-label i18n" data-en="Role Mentions (optional)" data-ar="منشن رتب (اختياري)"></label>
+            <div class="chip-container" id="role-chip-container" onclick="this.querySelector('.chip-input').focus()">
+              <input type="text" class="chip-input" id="role-input" placeholder="Role ID..." data-type="role">
+            </div>
+            <span class="form-hint i18n" data-en="Enter role IDs to mention when a notification is sent. Paste or type an ID and press Enter." data-ar="ادخل آيديات الرتب الي تبي تنمنشن لما يجي إشعار. الصق أو اكتب الآيدي واضغط Enter."></span>
+          </div>
+          <div class="form-group">
+            <label class="form-label i18n" data-en="User Mentions (optional)" data-ar="منشن مستخدمين (اختياري)"></label>
+            <div class="chip-container" id="user-chip-container" onclick="this.querySelector('.chip-input').focus()">
+              <input type="text" class="chip-input" id="user-input" placeholder="User ID..." data-type="user">
+            </div>
+            <span class="form-hint i18n" data-en="Enter user IDs to mention when a notification is sent. User info will be fetched automatically." data-ar="ادخل آيديات المستخدمين الي تبي تنمنشن. بيانات المستخدم بتنجلب تلقائي."></span>
+          </div>
+          <button type="submit" class="submit-btn i18n" id="submit-btn" data-en="Register Webhook" data-ar="تسجيل Webhook"></button>
+        </form>
+        <div class="form-status" id="form-status"></div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ProBot Ban -->
+    <section id="probot">
+      <h2 class="section-title"><span class="bar"></span><span class="i18n" data-en="ProBot Bulk Ban" data-ar="حظر جماعي عن طريق ProBot"></span></h2>
+      <p class="section-desc i18n" data-en="Copy the command below and paste it in any channel where ProBot has ban permissions." data-ar="انسخ الأمر التالي والصقه في أي قناة عندك فيها بوت ProBot بصلاحيات الحظر."></p>
+      <div class="code-block">
+        <div class="code-block-header">
+          <span class="code-block-label">ProBot /ban</span>
+          <button class="copy-btn" onclick="copyCode(this)"><span class="i18n" data-en="Copy" data-ar="نسخ"></span></button>
+        </div>
+        <div class="code-block-content">
+          <pre id="probot-command">Loading...</pre>
+        </div>
+      </div>
+      <p style="font-size: 13px; color: var(--text-muted);" class="i18n" data-en="This command auto-updates with every new account detected." data-ar="الأمر هذا يتحدّث تلقائيًا مع كل تحديث للقائمة."></p>
+    </section>
+
+    <hr class="divider">
+
+    <!-- API Ban -->
+    <section id="api">
+      <h2 class="section-title"><span class="bar"></span><span class="i18n" data-en="Programmatic Ban (Discord API v10)" data-ar="الحظر البرمجي (Discord API v10)"></span></h2>
+      <p class="section-desc i18n" data-en="If you run your own bot, fetch the list and ban programmatically using Discord REST API:" data-ar="لو عندك بوت خاص، تقدر تسحب القائمة وتحظرهم تلقائي باستخدام Discord REST API:"></p>
+      <div class="code-block">
+        <div class="code-block-header">
+          <span class="code-block-label">JavaScript</span>
+          <button class="copy-btn" onclick="copyCode(this)"><span class="i18n" data-en="Copy" data-ar="نسخ"></span></button>
+        </div>
+        <div class="code-block-content">
+          <pre>const GUILD_ID = 'YOUR_GUILD_ID';
+const BOT_TOKEN = 'YOUR_BOT_TOKEN';
+
+const res = await fetch('https://raw.githubusercontent.com/sertraline-nightmare/sertraline-accounts/main/discord_accounts.json');
+const data = await res.json();
+const ids = data.userIds.split(' ');
+
+for (const id of ids) {
+  await fetch(`https://discord.com/api/v10/guilds/${GUILD_ID}/bans/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Authorization': `Bot ${BOT_TOKEN}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      delete_message_seconds: 604800,
+      reason: 'سيرترالين وأعوانه — sertraline-accounts',
+    }),
+  });
+}</pre>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- Account Formats -->
+    <section id="formats">
+      <h2 class="section-title"><span class="bar"></span><span class="i18n" data-en="Account List" data-ar="قائمة الحسابات"></span></h2>
+      <p class="section-desc">
+        <span class="i18n" data-en="All account IDs in multiple ready-to-copy formats. Raw JSON:" data-ar="كل الآيديات (IDs) بصيغ جاهزة للنسخ. الملف مباشرة:"></span>
+        <a href="https://raw.githubusercontent.com/sertraline-nightmare/sertraline-accounts/main/discord_accounts.json" style="color: var(--accent); text-decoration: none; font-size: 13px;">discord_accounts.json</a>
+      </p>
+      <div id="formats-container">
+        <p style="color: var(--text-muted); font-size: 14px;" class="i18n" data-en="Loading account data..." data-ar="جاري تحميل البيانات..."></p>
+      </div>
+    </section>
+
+
+
+    <hr class="divider">
+
+    <!-- Story -->
+    <section id="story">
+      <h2 class="section-title"><span class="bar"></span><span class="i18n" data-en="The Story" data-ar="القصة باختصار"></span></h2>
+      <p class="section-desc i18n" data-en="A person known as Sertraline operates dozens of Discord accounts, along with his accomplices. Their pattern is always the same:" data-ar="شخص يُعرف بـ سيرترالين (Sertraline) يشغّل عشرات الحسابات على Discord، هو وأعوانه. طريقتهم وحدة:"></p>
+      <ol class="steps">
+        <li class="i18n" data-en="Join well-known YouTuber servers and community servers" data-ar="يدخلون سيرفرات يوتيوبرز ومجتمعات معروفة"></li>
+        <li class="i18n" data-en="Post or DM members with links to graphic sexual content and CSAM" data-ar="يرسلون في القنوات أو الخاص روابط لمحتوى جنسي ومواد استغلال أطفال (CSAM)"></li>
+        <li class="i18n" data-en='Promote their own server which they describe as having no moderation and being open to minors' data-ar='يروّجون لسيرفرهم الي يوصفونه بـ "بدون رقابة" ومفتوح لأي أحد بما فيهم القاصرين'></li>
+      </ol>
+      <p class="section-desc i18n" style="margin-top: 16px;" data-en="Every time an account gets banned, they rotate to another. This list tracks all known accounts so moderators can ban them preemptively." data-ar="كل ما ينحظر حساب يرجعون بواحد ثاني. هذي القائمة تجمع كل الحسابات المعروفة عشان المشرفين يقدرون يحظرونهم من قبل لا يسوون شي."></p>
+    </section>
+
+    <hr class="divider">
+
+    <!-- Reference -->
+    <section id="reference">
+      <h2 class="section-title"><span class="bar"></span><span class="i18n" data-en="External Reference" data-ar="مرجع خارجي"></span></h2>
+      <p class="section-desc i18n" data-en="The following post on X (formerly Twitter) documents this person's activity:" data-ar="المنشور هذا على X (تويتر سابقًا) يشرح الموضوع ويطالب بالقبض عليه:"></p>
+      <div class="card card-quote">
+        <div class="quote-author">
+          <a href="https://x.com/grissyil/status/2035670959013634412" target="_blank" rel="noopener">ابو حميد | Grissyi (@Grissyil)</a>
+        </div>
+        <p class="quote-text">ثريد ومطالبة بالقبض 🇸🇦 هل القذر الملحد المعتوه يدخل سيرفرات اليوتيوبرز ويروج لسيرفره الالحادي والي يبيع فيه مقاطع اعتداء على اطفال والعياذ بالله ويسب الاسلام ومملكتنا الحبيبة ودول الخليج اسمه تركي وبالغالب يستعمله كإسم مستعار ، وكل ما يتم حظره يرجع بحساب جديد وكأن الموضوع لعبة</p>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- Update Info -->
+    <section id="updates">
+      <h2 class="section-title"><span class="bar"></span><span class="i18n" data-en="How It Stays Updated" data-ar="كيف تُحدَّث القائمة"></span></h2>
+      <p class="section-desc i18n" data-en="A scanner runs continuously. When new accounts are detected, the data is updated and pushed automatically." data-ar="فيه ماسح (scanner) يشتغل تلقائي بشكل مستمر. إذا انضافت حسابات جديدة يُحدَّث الملف ويُرفع تلقائي."></p>
+      <table class="info-table">
+        <tr>
+          <th class="i18n" data-en="Field" data-ar="الحقل"></th>
+          <th class="i18n" data-en="Description" data-ar="الوصف"></th>
+          <th class="i18n" data-en="Value" data-ar="القيمة"></th>
+        </tr>
+        <tr>
+          <td><code>last_check</code></td>
+          <td class="i18n" data-en="Last time the scanner ran" data-ar="متى آخر مرة اشتغل الماسح"></td>
+          <td id="last-check">—</td>
+        </tr>
+        <tr>
+          <td><code>last_updated</code></td>
+          <td class="i18n" data-en="Last time new accounts were added" data-ar="متى آخر مرة انضافت حسابات جديدة"></td>
+          <td id="last-updated">—</td>
+        </tr>
+      </table>
+    </section>
+
+    <hr class="divider">
+
+    <!-- Reporting -->
+    <section id="report">
+      <h2 class="section-title"><span class="bar"></span><span class="i18n" data-en="Report a New Account" data-ar="الإبلاغ عن حساب جديد"></span></h2>
+      <p class="section-desc">
+        <span class="i18n" data-en="Encountered this person on a new account not listed here? " data-ar="لو صادفت حساب لهذا الشخص أو أعوانه وما كان موجود هنا، "></span>
+        <a href="https://github.com/sertraline-nightmare/sertraline-accounts/issues/new" target="_blank" rel="noopener" style="color: var(--accent); text-decoration: none;"><span class="i18n" data-en="Open an issue" data-ar="افتح Issue"></span></a>
+        <span class="i18n" data-en=" with the user ID." data-ar=" وحط المعرّف (ID) وبنضيفه."></span>
+      </p>
+    </section>
+
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>
+      <a href="https://github.com/sertraline-nightmare/sertraline-accounts" target="_blank" rel="noopener">GitHub</a>
+      &nbsp;·&nbsp;
+      <span class="i18n" data-en="Data provided freely for the safety of Discord communities." data-ar="البيانات متاحة للجميع لحماية مجتمعات Discord."></span>
+    </p>
+  </footer>
+
+  <div class="site-toast" id="site-toast"></div>
+
+  <script>
+    const SUPABASE_URL = 'https://haecrwpjkgmkgqyinowb.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhhZWNyd3Bqa2dta2dxeWlub3diIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNzExMjYsImV4cCI6MjA4OTk0NzEyNn0.WNiF4e9L4d9q_VxDPR7UQVhT_TsViNFC2XYzaEQn74E';
+    const DATA_URL = './discord_accounts.json';
+
+    let currentLang = 'en';
+    let accountData = null;
+
+    const roleChips = [];
+    const userChips = [];
+    const profileCache = new Map();
+    const MAX_CHIPS = 10;
+
+    // ─── Toast ───
+    function showSiteToast(msg, type = '') {
+      const t = document.getElementById('site-toast');
+      t.textContent = msg;
+      t.className = 'site-toast visible' + (type ? ' ' + type : '');
+      const duration = Math.max(3000, Math.min(8000, msg.length * 75));
+      clearTimeout(t._timer);
+      t._timer = setTimeout(() => { t.className = 'site-toast'; }, duration);
+    }
+
+    // ─── Language ───
+    function setLang(lang) {
+      currentLang = lang;
+      document.body.setAttribute('data-lang', lang);
+
+      document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+      document.getElementById('btn-ar').classList.toggle('active', lang === 'ar');
+
+      if (lang === 'ar') {
+        document.documentElement.lang = 'ar';
+        document.documentElement.dir = 'rtl';
+      } else {
+        document.documentElement.lang = 'en';
+        document.documentElement.dir = 'ltr';
+      }
+
+      document.querySelectorAll('.i18n').forEach(el => {
+        const text = el.getAttribute('data-' + lang);
+        if (text) el.textContent = text;
+      });
+
+      if (accountData) {
+        renderFormats();
+        document.getElementById('badge-count-text').textContent =
+          accountData.total_accounts + (lang === 'ar' ? ' حساب' : ' accounts');
+        const rel = toRelative(accountData.last_updated_utc);
+        const updatedEl = document.getElementById('badge-updated');
+        updatedEl.textContent = rel.short;
+        updatedEl.title = rel.full;
+      }
+    }
+
+    // ─── Copy ───
+    function copyCode(btn) {
+      const block = btn.closest('.code-block') || btn.closest('.collapsible');
+      const pre = block.querySelector('pre');
+      navigator.clipboard.writeText(pre.textContent).then(() => {
+        btn.classList.add('copied');
+        const span = btn.querySelector('span');
+        const orig = span.getAttribute('data-' + currentLang);
+        span.textContent = currentLang === 'ar' ? 'تم!' : 'Copied!';
+        setTimeout(() => {
+          btn.classList.remove('copied');
+          span.textContent = orig;
+        }, 1500);
+      });
+    }
+
+    // ─── Collapsible ───
+    function toggleCollapsible(el) {
+      el.closest('.collapsible').classList.toggle('open');
+    }
+
+    // ─── Render Formats ───
+    function renderFormats() {
+      const formats = [
+        { en: 'Mentions (space-separated)', ar: 'Mentions (مفصولة بمسافات)', key: 'mentions' },
+        { en: 'Mentions (comma-separated)', ar: 'Mentions (مفصولة بفواصل)', key: 'mentions_commas' },
+        { en: 'User IDs (space-separated)', ar: 'User IDs (مفصولة بمسافات)', key: 'userIds' },
+        { en: 'User IDs (comma-separated)', ar: 'User IDs (مفصولة بفواصل)', key: 'userIds_commas' },
+      ];
+
+      const container = document.getElementById('formats-container');
+      container.innerHTML = '';
+      formats.forEach(f => {
+        const div = document.createElement('div');
+        div.className = 'collapsible';
+        div.innerHTML =
+          '<button class="collapsible-toggle" onclick="toggleCollapsible(this)">' +
+            '<span>' + (currentLang === 'ar' ? f.ar : f.en) + '</span>' +
+            '<span class="arrow">▶</span>' +
+          '</button>' +
+          '<div class="collapsible-body">' +
+            '<div class="code-block">' +
+              '<div class="code-block-header">' +
+                '<span class="code-block-label">' + f.key + '</span>' +
+                '<button class="copy-btn" onclick="copyCode(this)">' +
+                  '<span class="i18n" data-en="Copy" data-ar="نسخ">' + (currentLang === 'ar' ? 'نسخ' : 'Copy') + '</span>' +
+                '</button>' +
+              '</div>' +
+              '<div class="code-block-content"><pre>' + accountData[f.key] + '</pre></div>' +
+            '</div>' +
+          '</div>';
+        container.appendChild(div);
+      });
+    }
+
+    // ─── Convert UTC string to local 12h format ───
+    function toLocal12h(utcStr) {
+      if (!utcStr) return '—';
+      try {
+        const clean = utcStr.replace(' UTC', '').replace(' ', 'T') + ':00Z';
+        const d = new Date(clean);
+        if (isNaN(d)) return utcStr;
+        return d.toLocaleString(undefined, {
+          year: 'numeric', month: '2-digit', day: '2-digit',
+          hour: 'numeric', minute: '2-digit', hour12: true
+        });
+      } catch {
+        return utcStr;
+      }
+    }
+
+    // ─── Relative time (Today/Yesterday) ───
+    function toRelative(utcStr) {
+      if (!utcStr) return { short: '—', full: '' };
+      try {
+        const clean = utcStr.replace(' UTC', '').replace(' ', 'T') + ':00Z';
+        const d = new Date(clean);
+        if (isNaN(d)) return { short: utcStr, full: '' };
+
+        const now = new Date();
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const dateDay = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+        const diffDays = Math.floor((today - dateDay) / 86400000);
+
+        const time = d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit', hour12: true });
+        const full = toLocal12h(utcStr);
+
+        let label;
+        if (diffDays === 0) label = (currentLang === 'ar' ? 'اليوم' : 'Today') + ', ' + time;
+        else if (diffDays === 1) label = (currentLang === 'ar' ? 'أمس' : 'Yesterday') + ', ' + time;
+        else label = full;
+
+        return { short: label, full: full };
+      } catch {
+        return { short: utcStr, full: '' };
+      }
+    }
+
+    // ─── Load Data ───
+    async function loadData() {
+      try {
+        const res = await fetch(DATA_URL + '?t=' + Date.now());
+        accountData = await res.json();
+
+        const countLabel = currentLang === 'ar'
+          ? accountData.total_accounts + ' حساب'
+          : accountData.total_accounts + ' accounts';
+        document.getElementById('badge-count-text').textContent = countLabel;
+
+        const rel = toRelative(accountData.last_updated_utc);
+        const updatedEl = document.getElementById('badge-updated');
+        updatedEl.textContent = rel.short;
+        updatedEl.title = rel.full;
+
+        document.getElementById('last-check').textContent = toLocal12h(accountData.last_check_utc);
+        document.getElementById('last-updated').textContent = toLocal12h(accountData.last_updated_utc);
+
+        const firstId = accountData.userIds.split(' ')[0];
+        document.getElementById('probot-command').textContent =
+          '/ban user:' + firstId + ' time:9999y reason:سيرترالين وأعوانه -أخزاهم الله- bulk:' + accountData.mentions;
+
+        renderFormats();
+      } catch (e) {
+        console.error('Failed to load data:', e);
+        document.getElementById('formats-container').innerHTML =
+          '<p style="color: var(--danger); font-size: 14px;">Failed to load account data.</p>';
+      }
+    }
+
+    // ═══════════════════════════════════════════
+    //  CHIP SYSTEM
+    // ═══════════════════════════════════════════
+
+    const ID_REGEX = /^\d{17,20}$/;
+    const ROLE_MENTION_RE = /^<@&(\d{17,20})>$/;
+    const USER_MENTION_RE = /^<@!?(\d{17,20})>$/;
+    const CHANNEL_MENTION_RE = /^<#(\d{17,20})>$/;
+    const ANY_MENTION_RE = /<@[&!]?\d{17,20}>|<#\d{17,20}>/g;
+
+    function parseInputToken(raw, targetType) {
+      const token = raw.trim();
+      if (!token) return null;
+
+      if (CHANNEL_MENTION_RE.test(token)) {
+        showSiteToast(currentLang === 'ar'
+          ? 'صيغة قناة غير مدعومة وتم تجاهلها.'
+          : 'Channel mention format is not supported and was ignored.', 'error');
+        return null;
+      }
+
+      const roleMatch = token.match(ROLE_MENTION_RE);
+      if (roleMatch) {
+        if (targetType === 'role') return { type: 'role', id: roleMatch[1] };
+        showSiteToast(currentLang === 'ar'
+          ? 'هذا منشن رتبة. تم نقله لحقل الرتب تلقائيًا.'
+          : 'This is a role mention. It was moved to the Roles field automatically.', 'warning');
+        return { type: 'role', id: roleMatch[1], transported: true };
+      }
+
+      const userMatch = token.match(USER_MENTION_RE);
+      if (userMatch) {
+        if (targetType === 'user') return { type: 'user', id: userMatch[1] };
+        showSiteToast(currentLang === 'ar'
+          ? 'هذا منشن مستخدم. تم نقله لحقل المستخدمين تلقائيًا.'
+          : 'This is a user mention. It was moved to the Users field automatically.', 'warning');
+        return { type: 'user', id: userMatch[1], transported: true };
+      }
+
+      if (ID_REGEX.test(token)) {
+        return { type: targetType, id: token };
+      }
+
+      showSiteToast(currentLang === 'ar'
+        ? 'صيغة غير صحيحة: ' + token
+        : 'Invalid format: ' + token, 'error');
+      return null;
+    }
+
+    function addChip(parsed) {
+      if (!parsed) return;
+      const { type, id } = parsed;
+      const arr = type === 'role' ? roleChips : userChips;
+      const containerId = type === 'role' ? 'role-chip-container' : 'user-chip-container';
+
+      if (arr.some(c => c.id === id)) {
+        showSiteToast(currentLang === 'ar' ? 'الآيدي موجود مسبقًا.' : 'This ID is already added.', 'warning');
+        return;
+      }
+
+      if (arr.length >= MAX_CHIPS) {
+        showSiteToast(currentLang === 'ar'
+          ? 'الحد الأقصى ' + MAX_CHIPS + ' فقط.'
+          : 'Maximum ' + MAX_CHIPS + ' mentions allowed.', 'error');
+        return;
+      }
+
+      const entry = { id };
+      arr.push(entry);
+
+      const container = document.getElementById(containerId);
+      const input = container.querySelector('.chip-input');
+      const chip = document.createElement('span');
+      chip.className = 'mention-chip';
+      chip.dataset.id = id;
+
+      if (type === 'role') {
+        chip.innerHTML =
+          '<span class="chip-role-icon">@</span>' +
+          '<span class="chip-label">' + id + '</span>' +
+          '<button class="chip-remove" onclick="removeChip(this, \'role\')" type="button">✕</button>';
+      } else {
+        const defaultIdx = Number(BigInt(id) >> 22n) % 5;
+        const defaultAvatar = 'https://cdn.discordapp.com/embed/avatars/' + defaultIdx + '.png';
+        chip.innerHTML =
+          '<img class="chip-avatar" src="' + defaultAvatar + '" alt="">' +
+          '<span class="chip-label">' + id + '</span>' +
+          '<button class="chip-remove" onclick="removeChip(this, \'user\')" type="button">✕</button>';
+        fetchUserProfile(id, chip);
+      }
+
+      container.insertBefore(chip, input);
+    }
+
+    function removeChip(btn, type) {
+      const chip = btn.closest('.mention-chip');
+      const id = chip.dataset.id;
+      const arr = type === 'role' ? roleChips : userChips;
+      const idx = arr.findIndex(c => c.id === id);
+      if (idx !== -1) arr.splice(idx, 1);
+      chip.remove();
+    }
+
+    async function fetchUserProfile(id, chipEl) {
+      if (profileCache.has(id)) {
+        applyProfileToChip(profileCache.get(id), chipEl);
+        return;
+      }
+
+      try {
+        const res = await fetch(SUPABASE_URL + '/rest/v1/rpc/get_discord_profile', {
+          method: 'POST',
+          headers: {
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ discord_id: id }),
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.username) {
+            profileCache.set(id, data);
+            applyProfileToChip(data, chipEl);
+            const entry = userChips.find(c => c.id === id);
+            if (entry) {
+              entry.username = data.username;
+              entry.displayName = data.global_name || data.username;
+              entry.avatar = data.avatar;
+            }
+          }
+        }
+      } catch {}
+    }
+
+    function applyProfileToChip(data, chipEl) {
+      const id = chipEl.dataset.id;
+      const img = chipEl.querySelector('.chip-avatar');
+      if (img && data.avatar) {
+        const ext = data.avatar.startsWith('a_') ? 'gif' : 'png';
+        img.src = 'https://cdn.discordapp.com/avatars/' + id + '/' + data.avatar + '.' + ext + '?size=64';
+      }
+      const label = chipEl.querySelector('.chip-label');
+      if (label) {
+        const display = data.global_name || data.username;
+        label.innerHTML = display + ' <small>@' + data.username + '</small>';
+      }
+    }
+
+    // ─── Chip Input Handlers ───
+    function processChipInput(inputEl) {
+      const targetType = inputEl.dataset.type;
+      const raw = inputEl.value;
+      if (!raw.trim()) return;
+
+      const tokens = raw.split(/[\s,]+/).filter(Boolean);
+      tokens.forEach(tok => {
+        const parsed = parseInputToken(tok, targetType);
+        if (parsed) {
+          addChip(parsed);
+        }
+      });
+      inputEl.value = '';
+    }
+
+    function initChipInputs() {
+      document.querySelectorAll('.chip-input').forEach(input => {
+        input.addEventListener('keydown', e => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            processChipInput(input);
+          }
+          if (e.key === 'Backspace' && !input.value) {
+            const type = input.dataset.type;
+            const arr = type === 'role' ? roleChips : userChips;
+            if (arr.length) {
+              const last = arr.pop();
+              const chip = input.parentElement.querySelector('.mention-chip[data-id="' + last.id + '"]');
+              if (chip) chip.remove();
+            }
+          }
+        });
+
+        input.addEventListener('paste', e => {
+          e.preventDefault();
+          const text = (e.clipboardData || window.clipboardData).getData('text').trim();
+          input.value = text;
+          processChipInput(input);
+        });
+
+        input.addEventListener('blur', () => {
+          if (input.value.trim()) processChipInput(input);
+        });
+      });
+    }
+
+    // ─── Build mention string from chips ───
+    function buildMentionString() {
+      const parts = [];
+      roleChips.forEach(c => parts.push('<@&' + c.id + '>'));
+      userChips.forEach(c => parts.push('<@' + c.id + '>'));
+      return parts.join(' ');
+    }
+
+    function getRoleIdsString() {
+      return roleChips.map(c => c.id).join(' ');
+    }
+
+    function getUserIdsString() {
+      return userChips.map(c => c.id).join(' ');
+    }
+
+    // ─── Webhook Submit ───
+    async function submitWebhook(e) {
+      e.preventDefault();
+
+      const urlInput = document.getElementById('webhook-url');
+      const status = document.getElementById('form-status');
+      const btn = document.getElementById('submit-btn');
+
+      const webhookUrl = urlInput.value.trim();
+      const mentionStr = buildMentionString();
+
+      if (!webhookUrl.startsWith('https://discord.com/api/webhooks/')) {
+        status.className = 'form-status error';
+        status.textContent = currentLang === 'ar'
+          ? 'الرابط لازم يبدأ بـ https://discord.com/api/webhooks/'
+          : 'URL must start with https://discord.com/api/webhooks/';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = currentLang === 'ar' ? 'جاري التسجيل...' : 'Registering...';
+
+      try {
+        const res = await fetch(SUPABASE_URL + '/rest/v1/webhooks', {
+          method: 'POST',
+          headers: {
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=minimal',
+          },
+          body: JSON.stringify({
+            webhook_url: webhookUrl,
+            role_mentions: getRoleIdsString() || null,
+            user_mentions: getUserIdsString() || null,
+          }),
+        });
+
+        if (res.ok) {
+          try {
+            await fetch(webhookUrl, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                content: mentionStr || null,
+                embeds: [{
+                  title: '✅ تم تسجيل الإشعارات — Webhook Registered',
+                  description:
+                    'تم تسجيل هذه القناة بنجاح لاستقبال إشعارات **sertraline-accounts**.\n' +
+                    'بتوصلك رسالة هنا كل ما ينكشف حساب جديد.\n\n' +
+                    'This channel is now registered to receive **sertraline-accounts** notifications.\n' +
+                    'You\'ll get a message here whenever new accounts are detected.' +
+                    (mentionStr ? '\n\n**Mentions:** ' + mentionStr : ''),
+                  color: 0x3BA55C,
+                  footer: { text: 'sertraline-accounts' },
+                  timestamp: new Date().toISOString(),
+                }],
+              }),
+            });
+          } catch (_) {}
+
+          status.className = 'form-status success';
+          status.textContent = currentLang === 'ar'
+            ? 'تم التسجيل بنجاح. بتوصلك إشعارات لما ينكشف حساب جديد.'
+            : 'Registered successfully. You\'ll be notified when new accounts are detected.';
+          urlInput.value = '';
+          roleChips.length = 0;
+          userChips.length = 0;
+          document.querySelectorAll('.mention-chip').forEach(c => c.remove());
+        } else if (res.status === 409) {
+          status.className = 'form-status error';
+          status.textContent = currentLang === 'ar'
+            ? 'هذا الـ Webhook مسجّل مسبقًا.'
+            : 'This webhook is already registered.';
+        } else {
+          const err = await res.json();
+          throw new Error(err.message || 'Unknown error');
+        }
+      } catch (err) {
+        status.className = 'form-status error';
+        status.textContent = currentLang === 'ar'
+          ? 'فشل التسجيل: ' + err.message
+          : 'Registration failed: ' + err.message;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = btn.getAttribute('data-' + currentLang) || 'Register Webhook';
+      }
+    }
+
+    // ─── Init ───
+    setLang('ar');
+    loadData();
+    initChipInputs();
+  </script>
+
+</body>
+</html>
